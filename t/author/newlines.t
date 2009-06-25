@@ -5,30 +5,12 @@ BEGIN {
 
 	use Test::More;
 	use File::Find;
+	
+	# Are we an author test?
+	plan skip_all => 'Skipping author tests'
+	 unless $ENV{RUN_AUTHOR_TESTS};
+ 
 }
-
-
-=head1 NAME
-
-t/newlines.t - test to make sure all text files are in unix linefeed format
-
-=head1 DESCRIPTION
-
-Descends through the distribution directory and verifies that all text files 
-(files with an extention matching a pattern, such as *.txt) are in unix
-linefeed format.
-
-=head1 TESTS
-
-This module defines the following tests.
-
-=head2 Descend Distribution
-
-Starting at the Distribution root, look at all files in all subdirections and
-if the file matches a text type (according to a particular regex for it's
-extension) add it to a files of files to test.
-
-=cut
 
 my @files;
 
@@ -47,13 +29,6 @@ sub process
 	push @files, $File::Find::name
 	 if $file =~m/\.yml$|\.pm$|\.pod$|\.tt$|\.txt$|\.js$|\.css$|\.sql$|\.html$/;
 }
-
-
-=head2 Test Linefeedtype
-
-Check if the generated files are correctly unix linefeeds
-
-=cut
 
 my $CR   = "\015";      # Apple II family, Mac OS thru version 9
 my $CRLF = "\015\012";  # CP/M, MP/M, DOS, Microsoft Windows
@@ -99,19 +74,6 @@ else
 {
 	$test_builder->plan(skip_all => 'No Text Files Found! (This is probably BIG Trouble...');
 }
-
-=head1 AUTHOR
-
-John Napiorkowski, C<< <jjn1056 at yahoo.com> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 John Napiorkowski.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 
 1;

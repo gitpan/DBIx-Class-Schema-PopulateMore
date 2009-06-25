@@ -2,6 +2,10 @@ use strict;
 use warnings;
 use Test::More;
 
+# Are we an author test?
+plan skip_all => 'Skipping author tests'
+ unless $ENV{RUN_AUTHOR_TESTS};
+ 
 # Ensure a recent version of Test::Pod::Coverage
 my $min_tpc = 1.08;
 eval "use Test::Pod::Coverage $min_tpc";
