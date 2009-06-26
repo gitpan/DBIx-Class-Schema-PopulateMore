@@ -15,6 +15,7 @@ lib/DBIx/Class/Schema/PopulateMore/Command.pm
 lib/DBIx/Class/Schema/PopulateMore/Inflator.pm
 lib/DBIx/Class/Schema/PopulateMore/Inflator/Date.pm
 lib/DBIx/Class/Schema/PopulateMore/Inflator/Env.pm
+lib/DBIx/Class/Schema/PopulateMore/Inflator/Find.pm
 lib/DBIx/Class/Schema/PopulateMore/Inflator/Index.pm
 lib/DBIx/Class/Schema/PopulateMore/Test/Schema.pm
 lib/DBIx/Class/Schema/PopulateMore/Test/Schema/Result.pm
