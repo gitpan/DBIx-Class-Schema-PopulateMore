@@ -37,3 +37,4 @@ t/02-yaml_example.t
 t/author/newlines.t
 t/author/pod-coverage.t
 t/author/pod.t
+t/var/README
