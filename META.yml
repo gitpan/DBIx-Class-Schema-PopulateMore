@@ -4,12 +4,13 @@ author:
   - 'John Napiorkowski <jjn1056@yahoo.com>'
 build_requires:
   DBIx::Class: 0.08107
+  DateTime::Format::SQLite: 0.10
   ExtUtils::MakeMaker: 6.42
   File::Find: 0
-  Path::Class: 0
-  SQL::Translator: 0.09004
-  Test::More: 0
-  YAML::Tiny: 0
+  Path::Class: 0.17
+  SQL::Translator: 0.09007
+  Test::More: 0.88
+  YAML::Tiny: 1.39
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
@@ -28,9 +29,9 @@ requires:
   DateTimeX::Easy: 0.087
   List::MoreUtils: 0.22
   Module::Pluggable: 3.9
-  Moose: 0.83
-  MooseX::AttributeHelpers: 0.19
+  Moose: 0.85
+  MooseX::AttributeHelpers: 0.20
   perl: 5.8.8
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.09
+version: 0.10
