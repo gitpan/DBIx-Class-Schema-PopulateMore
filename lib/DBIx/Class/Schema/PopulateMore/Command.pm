@@ -1,10 +1,10 @@
 package DBIx::Class::Schema::PopulateMore::Command;
 
 use Moose;
-use MooseX::AttributeHelpers;
 use List::MoreUtils qw(pairwise);
 use DBIx::Class::Schema::PopulateMore::Visitor;
 use Module::Pluggable::Object;
+use Moose::Util::TypeConstraints qw(class_type);
 
 
 =head1 NAME
@@ -29,9 +29,9 @@ This is the Schema we are populating
 =cut
 
 has 'schema' => (
-	is=>'ro',
-	required=>1,
-	isa=>'Object',
+    is=>'ro',
+    required=>1,
+    isa=>'Object',
 );
 
 =head2 exception_cb
@@ -41,9 +41,9 @@ contains a callback to the exception method supplied by DBIC
 =cut
 
 has 'exception_cb' => (
-	is=>'ro',
-	required=>1,
-	isa=>'CodeRef',
+    is=>'ro',
+    required=>1,
+    isa=>'CodeRef',
 );
 
 =head2 definitions
@@ -53,10 +53,10 @@ This is an arrayref of information used to populate tables in the database
 =cut
 
 has 'definitions' => (
-	is=>'ro',
-	required=>1,
-	isa=>"ArrayRef[HashRef]",
-	auto_deref=>1,
+    is=>'ro',
+    required=>1,
+    isa=>"ArrayRef[HashRef]",
+    auto_deref=>1,
 );
 
 
@@ -68,10 +68,10 @@ on.  This get's the namespace of the substitution plugin and it's other data.
 =cut
 
 has 'match_condition' => (
-	is=>'ro',
-	required=>1,
-	isa=>'RegexpRef', 
-	default=>sub {qr/^!(\w+:.+)$/ },
+    is=>'ro',
+    required=>1,
+    isa=>'RegexpRef', 
+    default=>sub {qr/^!(\w+:.+)$/ },
 );
 
 
@@ -84,13 +84,13 @@ neater
 =cut
 
 has 'visitor' => (
-	is=>'ro',
-	isa=>'DBIx::Class::Schema::PopulateMore::Visitor',
-	lazy_build=>1,
-	handles => [
-		'callback',
-		'visit', 
-	],
+    is=>'ro',
+    isa=>'DBIx::Class::Schema::PopulateMore::Visitor',
+    lazy_build=>1,
+    handles => [
+        'callback',
+        'visit', 
+    ],
 );
 
 
@@ -113,15 +113,15 @@ given an index, returns the related inflated resultset
 =cut
 
 has 'rs_index' => (
-	metaclass=>'Collection::Hash',
-	is=>'rw',
-	isa=>'HashRef[Object]',
-	lazy=>1,
-	default=>sub {{}},
-	provides=> {
-		set => 'set_rs_index',
-		get => 'get_rs_index',
-	},
+    traits=>['Hash'],
+    is=>'rw',
+    isa=>'HashRef[Object]',
+    lazy=>1,
+    default=>sub { +{} },
+    handles=> {
+        set_rs_index => 'set',
+        get_rs_index => 'get',
+    },
 );
 
 
@@ -132,12 +132,12 @@ Loads each of the available inflators, provider access to the objects
 =cut
 
 has 'inflator_loader' => (
-	is=>'ro',
-	isa=>'Module::Pluggable::Object',
-	lazy_build=>1,
-	handles=>{
-		'inflators' => 'plugins',
-	},
+    is=>'ro',
+    isa=> class_type('Module::Pluggable::Object'),
+    lazy_build=>1,
+    handles=>{
+        'inflators' => 'plugins',
+    },
 );
 
 
@@ -148,14 +148,14 @@ Holds an object that can perform dispatching to the inflators.
 =cut
 
 has 'inflator_dispatcher' => (
-	metaclass=>'Collection::Hash',
-	is=>'rw',
-	isa=>'HashRef[Object]',
-	lazy_build=>1,
-	provides=>{
-		'keys' => 'inflator_list',
-		'get' => 'get_inflator',
-	},
+    traits=>['Hash'],
+    is=>'rw',
+    isa=>'HashRef[Object]',
+    lazy_build=>1,
+    handles=>{
+        inflator_list => 'keys',
+        'get_inflator' => 'get',
+    },
 );
 
 
@@ -171,11 +171,11 @@ lazy build for the L</visitor> attribute.
 
 sub _build_visitor
 {
-	my $self = shift @_;
-	
-	DBIx::Class::Schema::PopulateMore::Visitor->new({
-		match_condition=>$self->match_condition
-	});	
+    my $self = shift @_;
+    
+    DBIx::Class::Schema::PopulateMore::Visitor->new({
+        match_condition=>$self->match_condition
+    });    
 }
 
 
@@ -187,13 +187,13 @@ lazy build for the L</inflator_loader> attribute
 
 sub _build_inflator_loader
 {
-	my $self = shift @_;
-	
-	return Module::Pluggable::Object->new(
-		search_path => 'DBIx::Class::Schema::PopulateMore::Inflator',
-		require => 1,
-		except => 'DBIx::Class::Schema::PopulateMore::Inflator', 
-	);	
+    my $self = shift @_;
+    
+    return Module::Pluggable::Object->new(
+        search_path => 'DBIx::Class::Schema::PopulateMore::Inflator',
+        require => 1,
+        except => 'DBIx::Class::Schema::PopulateMore::Inflator', 
+    );    
 }
 
 
@@ -205,19 +205,19 @@ lazy build for the L</inflator_dispatcher> attribute
 
 sub _build_inflator_dispatcher
 {
-	my $self = shift @_;
-	
-	my %inflators;
-	for my $inflator ($self->inflators)
-	{
-		my $inflator_obj = $inflator->new;
-		my $name = $inflator_obj->name;
-		
-		$inflators{$name} = $inflator_obj;
-		
-	}
-	
-	return \%inflators;
+    my $self = shift @_;
+    
+    my %inflators;
+    for my $inflator ($self->inflators)
+    {
+        my $inflator_obj = $inflator->new;
+        my $name = $inflator_obj->name;
+        
+        $inflators{$name} = $inflator_obj;
+        
+    }
+    
+    return \%inflators;
 }
 
 
@@ -230,31 +230,31 @@ rows, where each key is the named index and the value is the row object.
 
 sub execute
 {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	foreach my $definition ($self->definitions)
-	{
-		my ($source, $info) = each %$definition;
-		my @fields = $self->coerce_to_array($info->{fields});
-		
-		my $data = $self
-			->callback(sub {
-				$self->dispatch_inflator(shift);
-			})
-			->visit($info->{data});
-			
-		while( my ($rs_key, $values) = each %{$data} )
-		{
-			my @values = $self->coerce_to_array($values);
-			
-			my $new = $self->create_fixture(
-				$rs_key => $source,
-				$self->merge_fields_values([@fields], [@values])
-			);
-		}
-	}
-	
-	return %{$self->rs_index};
+    foreach my $definition ($self->definitions)
+    {
+        my ($source, $info) = each %$definition;
+        my @fields = $self->coerce_to_array($info->{fields});
+        
+        my $data = $self
+            ->callback(sub {
+                $self->dispatch_inflator(shift);
+            })
+            ->visit($info->{data});
+            
+        while( my ($rs_key, $values) = each %{$data} )
+        {
+            my @values = $self->coerce_to_array($values);
+            
+            my $new = $self->create_fixture(
+                $rs_key => $source,
+                $self->merge_fields_values([@fields], [@values])
+            );
+        }
+    }
+    
+    return %{$self->rs_index};
 }
 
 
@@ -266,18 +266,18 @@ Dispatch to the correct inflator
 
 sub dispatch_inflator
 {
-	my ($self, $arg) = @_;
-	my ($name, $command) =  ($arg =~m/^(\w+):(\w.+)$/); 
-	
-	if( my $inflator = $self->get_inflator($name) )
-	{
-		$inflator->inflate($self, $command);
-	}
-	else
-	{
-		my $available = join(', ', $self->inflator_list);
-		$self->exception_cb->("Can't Handle $name, available are: $available");
-	}
+    my ($self, $arg) = @_;
+    my ($name, $command) =  ($arg =~m/^(\w+):(\w.+)$/); 
+    
+    if( my $inflator = $self->get_inflator($name) )
+    {
+        $inflator->inflate($self, $command);
+    }
+    else
+    {
+        my $available = join(', ', $self->inflator_list);
+        $self->exception_cb->("Can't Handle $name, available are: $available");
+    }
 }
 
 
@@ -292,16 +292,16 @@ returns the newly created row or throws an exception if there is a failure
 
 sub create_fixture
 {
-	my ($self, $rs_key => $source, @create) = @_;
-	
-	my $new = $self
-		->schema
-		->resultset($source)
-		->update_or_create({@create});	
-		
-	$self->set_rs_index("$source.$rs_key" => $new);
-	
-	return $new;
+    my ($self, $rs_key => $source, @create) = @_;
+    
+    my $new = $self
+        ->schema
+        ->resultset($source)
+        ->update_or_create({@create});    
+        
+    $self->set_rs_index("$source.$rs_key" => $new);
+    
+    return $new;
 }
 
 
@@ -314,11 +314,11 @@ row statement.
 
 sub merge_fields_values
 {
-	my ($self, $fields, $values) = @_;
-	
-	return pairwise { 
-		$self->field_value($a,$b)
-	} (@$fields, @$values);	
+    my ($self, $fields, $values) = @_;
+    
+    return pairwise { 
+        $self->field_value($a,$b)
+    } (@$fields, @$values);    
 }
 
 
@@ -331,16 +331,16 @@ where the value is undefined.
 
 sub field_value
 {
-	my ($self, $a, $b) = @_;
-	
-	if(defined $a && defined $b)
-	{
-		return $a => $b;
-	}
-	else
-	{
-		return;
-	}
+    my ($self, $a, $b) = @_;
+    
+    if(defined $a && defined $b)
+    {
+        return $a => $b;
+    }
+    else
+    {
+        return;
+    }
 }
 
 
@@ -353,9 +353,9 @@ and return that array.
 
 sub coerce_to_array
 {
-	my ($self, $value) = @_;
-	
-	return ref $value eq 'ARRAY' ? @$value:($value);
+    my ($self, $value) = @_;
+    
+    return ref $value eq 'ARRAY' ? @$value:($value);
 }
 
 

@@ -11,11 +11,11 @@ DBIx::Class::Schema::PopulateMore - An enhanced populate method
 
 =head1 VERSION
 
-Version 0.14
+Version 0.15
 
 =cut
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 =head1 SYNOPSIS
 
@@ -326,7 +326,7 @@ easy to write beautiful Perl.
 
 =head1 LICENSE & COPYRIGHT
 
-Copyright 2008-2009, John Napiorkowski <jjnapiork@cpan.org>
+Copyright 2008-2010, John Napiorkowski <jjnapiork@cpan.org>
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

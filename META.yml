@@ -1,20 +1,21 @@
 ---
 abstract: 'An enhanced populate method'
 author:
-  - 'John Napiorkowski <jjn1056@yahoo.com>'
+  - 'John Napiorkowski, C<< <jjnapiork@cpan.org> >>'
+  - 'John Napiorkowski <jjnapiork6@cpan.org>'
 build_requires:
-  DBIx::Class: 0.08107
-  DateTime::Format::SQLite: 0.10
+  DBIx::Class: 0.08123
+  DateTime::Format::SQLite: 0.11
   ExtUtils::MakeMaker: 6.42
   File::Find: 0
-  Path::Class: 0.17
-  SQL::Translator: 0.09007
-  Test::More: 0.88
-  YAML::Tiny: 1.39
+  Path::Class: 0.19
+  SQL::Translator: 0.11006
+  Test::More: 0.96
+  YAML::Tiny: 1.44
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.91'
+generated_by: 'Module::Install version 1.00'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -25,13 +26,13 @@ no_index:
     - inc
     - t
 requires:
-  Data::Visitor: 0.25
-  DateTimeX::Easy: 0.087
+  Data::Visitor: 0.27
+  DateTimeX::Easy: 0.089
   List::MoreUtils: 0.22
   Module::Pluggable: 3.9
-  Moose: 0.85
-  MooseX::AttributeHelpers: 0.20
+  Moose: 1.09
   perl: 5.8.8
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.14
+  repository: git@github.com:jjn1056/DBIx-Class-Schema-PopulateMore.git
+version: 0.15
