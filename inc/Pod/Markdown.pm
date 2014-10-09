@@ -13,8 +13,8 @@ use strict;
 use warnings;
 
 package Pod::Markdown;
-# git description: v2.000-3-ga15fde1
-$Pod::Markdown::VERSION = '2.001';
+# git description: v2.001-2-gadb8327
+$Pod::Markdown::VERSION = '2.002';
 BEGIN {
   $Pod::Markdown::AUTHORITY = 'cpan:RWSTAUNER';
 }
@@ -879,4 +879,4 @@ sub format_fragment_sco      { shift->format_fragment_pod_simple_html(@_);  }
 
 __END__
 
-#line 1263
+#line 1265
